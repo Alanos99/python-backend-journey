@@ -497,3 +497,448 @@ def withdraw(balance, amount):
     return balance
 
 print(withdraw(2000, 1000))
+
+def calculate_discount(price, premium=False):
+    if premium is True:
+        return price * 0.15
+    return 0
+
+def calculate_subscription(price, months, premium=False):
+    total = (price, premium) * months
+    discount = calculate_discount(price, premium)
+    total = (price - discount) * months
+    return total
+
+print(calculate_subscription(100, 6, True))
+
+def calculate_discount(total, vip=False):
+    if vip is True:
+        return total * 0.1
+    return 0
+
+def calculate_order(price, quantity, vip=False):
+    total = price * quantity
+    discount = calculate_discount(total, vip)
+    total = total - discount
+    return total
+
+
+def calculate_salary(hourly_rate, hours):
+    gross = hourly_rate * hours
+    tax = gross * 0.2
+    net = gross - tax
+    return gross, tax, net
+
+gross, tax, net = calculate_salary(50, 160)
+print(gross)
+print(tax)
+print(net)
+
+def calculate_total(*prices):
+    total = 0
+    for price in prices:
+        total += price
+    return total
+print(calculate_total(100, 50, 20, 30))
+
+def calculate_tax(price):
+    return price * 0.23
+
+def run_calculation(function, value):
+    return function(value)
+
+result = run_calculation(calculate_tax, 1000)
+print(result)
+
+
+products = ["Laptop", "Monitor", "Klawiatura", "Mysz"]
+
+def find_product(products, searched_product):
+    for product in products:
+        if product == searched_product:
+            return product
+    return None
+
+def calculate_discount(total, premium=False):
+    if premium is True:
+        return total * 0.1
+    return 0
+
+def create_order(products, searched_product, price, quantity, premium=False):
+    product = find_product(products, searched_product)
+    if product is None:
+        return "Produkt nie został znaleziony"
+    elif quantity <= 0:
+        return "Nieprawidłowa ilość"
+    else:
+        total = price * quantity
+        discount = calculate_discount(total, premium)
+        total = total - discount
+        return product, total
+
+product, final_price = create_order(
+    products,
+    "Laptop",
+    2000,
+    2,
+    True
+)
+
+print(product)
+print(final_price)
+
+# ============================================================
+# DAY 3 — FUNCTIONS
+# ============================================================
+
+# 1. TWORZENIE FUNKCJI
+# def tworzy funkcję.
+# Kod funkcji wykonuje się dopiero po jej wywołaniu.
+
+def say_hello():
+    print("Cześć!")
+
+say_hello()
+
+
+# 2. PARAMETRY I ARGUMENTY
+# Parametr = zmienna w definicji funkcji.
+# Argument = konkretna wartość przekazana podczas wywołania.
+
+def introduce(name, age):
+    return f"{name} ma {age} lat"
+
+print(introduce("Alan", 27))
+
+
+# 3. RETURN
+# return zwraca wartość z funkcji i NATYCHMIAST ją kończy.
+
+def calculate_total(price, quantity):
+    return price * quantity
+
+total = calculate_total(100, 5)
+print(total)
+
+
+# 4. EARLY RETURN
+# Możemy wcześniej zakończyć funkcję, jeśli coś jest nieprawidłowe.
+
+def withdraw(balance, amount):
+    if amount <= 0:
+        return "Nieprawidłowa kwota"
+
+    if amount > balance:
+        return "Brak środków"
+
+    return balance - amount
+
+
+# 5. FUNKCJA + IF
+
+def check_age(age):
+    if age >= 18:
+        return "Pełnoletni"
+
+    return "Niepełnoletni"
+
+
+# 6. FUNKCJA + LISTA + FOR
+# W pętli:
+# product = aktualny element listy
+# searched_product = tego szukamy
+
+def find_product(products, searched_product):
+    for product in products:
+        if product == searched_product:
+            return product
+
+    # Ten return jest PO pętli.
+    # Dopiero po sprawdzeniu wszystkich produktów wiemy,
+    # że produktu nie znaleziono.
+    return None
+
+
+products = ["Laptop", "Monitor", "Mysz"]
+
+result = find_product(products, "Monitor")
+
+if result is None:
+    print("Nie znaleziono produktu")
+else:
+    print(f"Znaleziono: {result}")
+
+
+# 7. NONE
+# None oznacza brak wartości.
+# To nie jest napis "None".
+
+def find_user(users, searched_user):
+    for user in users:
+        if user == searched_user:
+            return user
+
+    return None
+
+
+# 8. DOMYŚLNE PARAMETRY
+# premium=False oznacza:
+# jeśli nie podamy premium, Python automatycznie użyje False.
+
+def calculate_discount(total, premium=False):
+    if premium:
+        return total * 0.10
+
+    return 0
+
+
+print(calculate_discount(1000))
+print(calculate_discount(1000, True))
+
+
+# 9. KEYWORD ARGUMENTS
+# Możemy przekazywać argumenty po nazwie.
+
+def show_user(name, age):
+    print(name)
+    print(age)
+
+show_user(age=27, name="Alan")
+
+
+# 10. WIELE WARTOŚCI Z RETURN
+# Funkcja może zwrócić kilka wartości.
+
+def calculate_salary(hourly_rate, hours):
+    gross = hourly_rate * hours
+    tax = gross * 0.20
+    net = gross - tax
+
+    return gross, tax, net
+
+
+gross, tax, net = calculate_salary(50, 160)
+
+print(gross)
+print(tax)
+print(net)
+
+
+# 11. WYNIK JEDNEJ FUNKCJI MOŻEMY PRZEKAZAĆ DO DRUGIEJ
+
+def calculate_order_total(price, quantity):
+    return price * quantity
+
+
+def calculate_order_discount(total, premium=False):
+    if premium:
+        return total * 0.10
+
+    return 0
+
+
+def calculate_final_price(price, quantity, premium=False):
+    total = calculate_order_total(price, quantity)
+    discount = calculate_order_discount(total, premium)
+    final_price = total - discount
+
+    return final_price
+
+
+print(calculate_final_price(100, 6, True))
+
+
+# 12. *args
+# *args pozwala przekazać dowolną liczbę argumentów pozycyjnych.
+# Wewnątrz funkcji możemy przejść po nich pętlą.
+
+def sum_prices(*prices):
+    total = 0
+
+    for price in prices:
+        total += price
+
+    return total
+
+
+print(sum_prices(100, 50, 20, 30))
+
+
+# 13. **kwargs
+# **kwargs pozwala przekazywać dowolną liczbę
+# NAZWANYCH argumentów.
+#
+# Na razie wystarczy pamiętać:
+#
+# *args   -> wiele argumentów pozycyjnych
+# **kwargs -> wiele argumentów nazwanych
+
+def show_data(**kwargs):
+    print(kwargs)
+
+show_data(name="Alan", age=27, premium=True)
+
+
+# 14. FUNKCJA JAKO ARGUMENT
+# Możemy przekazać samą funkcję do innej funkcji.
+
+def calculate_tax(price):
+    return price * 0.23
+
+
+def run_calculation(function, value):
+    return function(value)
+
+
+result = run_calculation(calculate_tax, 1000)
+print(result)
+
+# WAŻNE:
+# calculate_tax       -> sama funkcja
+# calculate_tax(1000) -> uruchomienie funkcji
+
+
+# 15. FUNKCJA WEWNĄTRZ FUNKCJI
+
+def calculate_product(price):
+
+    def calculate_product_discount():
+        return price * 0.20
+
+    discount = calculate_product_discount()
+    final_price = price - discount
+
+    return final_price
+
+
+print(calculate_product(200))
+
+
+# 16. LAMBDA
+# Krótka funkcja składająca się z jednego wyrażenia.
+
+calculate_net = lambda salary: salary * 0.80
+
+print(calculate_net(5000))
+
+
+# 17. TYPE HINTS
+# Type hints pokazują, jakich typów oczekujemy.
+# Python ich automatycznie nie wymusza.
+
+def calculate_price(price: float, quantity: int) -> float:
+    return price * quantity
+
+
+# -> float oznacza:
+# funkcja powinna zwrócić float.
+
+# -> None oznacza:
+# funkcja nie zwraca wartości.
+
+def display_message(message: str) -> None:
+    print(message)
+
+
+# ============================================================
+# NAJWAŻNIEJSZY SCHEMAT Z DAY 3
+# ============================================================
+
+# Dane
+#   ↓
+# funkcja
+#   ↓
+# walidacja (if)
+#   ↓
+# early return przy błędzie
+#   ↓
+# obliczenia
+#   ↓
+# wywołanie kolejnej funkcji
+#   ↓
+# odebranie jej wyniku
+#   ↓
+# dalsze obliczenia
+#   ↓
+# return wyniku
+
+
+# ============================================================
+# FINAL BOSS DAY 3
+# ============================================================
+
+products = ["Laptop", "Monitor", "Klawiatura", "Mysz"]
+
+
+def find_product(products, searched_product):
+    for product in products:
+        if product == searched_product:
+            return product
+
+    return None
+
+
+def calculate_discount(total, premium=False):
+    if premium:
+        return total * 0.10
+
+    return 0
+
+
+def create_order(products, searched_product, price, quantity, premium=False):
+    product = find_product(products, searched_product)
+
+    if product is None:
+        return "Produkt nie został znaleziony"
+
+    if quantity <= 0:
+        return "Nieprawidłowa ilość"
+
+    total = price * quantity
+    discount = calculate_discount(total, premium)
+    final_price = total - discount
+
+    return product, final_price
+
+
+product, final_price = create_order(
+    products,
+    "Laptop",
+    2000,
+    2,
+    True
+)
+
+print(product)
+print(final_price)
+
+
+# ============================================================
+# DAY 3 — ZAPAMIĘTAJ
+# ============================================================
+
+# def        -> tworzę funkcję
+# ()         -> wywołuję funkcję
+# parameter  -> zmienna przy definicji funkcji
+# argument   -> konkretna wartość przy wywołaniu
+# return     -> zwraca wynik i kończy funkcję
+# None       -> brak wartości
+# *args      -> wiele argumentów pozycyjnych
+# **kwargs   -> wiele argumentów nazwanych
+# lambda     -> krótka funkcja
+#
+# Wynik funkcji można:
+# - zapisać do zmiennej
+# - przekazać do kolejnej funkcji
+# - sprawdzić w if
+# - zwrócić z kolejnej funkcji
+#
+# return wewnątrz pętli kończy CAŁĄ funkcję.
+#
+# Przy wyszukiwaniu:
+# return znalezionego elementu -> wewnątrz pętli
+# return None                  -> po zakończeniu pętli
+#
+# Funkcje powinny wykonywać małe, konkretne zadania.
+# Kilka małych funkcji może współpracować ze sobą
+# przy wykonywaniu większego zadania.
